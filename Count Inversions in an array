@@ -1,7 +1,7 @@
 参考网页 1)  http://www.geeksforgeeks.org/counting-inversions/   归并排序 mergesort nlogn
          2)  http://pavelsimo.blogspot.com/2012/09/counting-inversions-in-array-using-BIT.html  树状数组 binary indexed tree nlogn
           
-    下面用merge sort，sort 的同时，返回inversion number
+第一： 下面用merge sort，sort 的同时，返回inversion number，但不一定对，还是用第二的bit比较保险
          
 #include <stdio.h>
 #include <stdlib.h>
@@ -95,3 +95,40 @@ Note that above code modifies (or sorts) the input array. If we want to count on
 Time Complexity: O(nlogn)
 Algorithmic Paradigm: Divide and Conquer
 
+
+第二： binary indexed tree   nlogn
+
+fork(7)	download copy
+#include <bits/stdc++.h>
+using namespace std;
+#define siz 100000
+vector<int>v;
+void form(int a){
+	while(a<siz){
+		v[a]++;
+		a+=a&-a;
+	}
+}
+int get(int a){
+	int ans=0;
+	while(a){
+		ans+=v[a];
+		a-=a&-a;
+	}
+	return ans;
+}
+int main() {
+	int n,sum=0;
+	cin>>n;
+	int a[n];
+	v.resize(siz);
+	for(int i=0;i<siz;++i)v[i]=0;
+	cout<<"Array is :  ";
+	for(int i=0;i<n;i++){cin>>a[i];cout<<a[i]<<" ";}cout<<endl;
+	for(int i=n-1;i>=0;i--){
+		sum+=	get(a[i]);
+		form(a[i]);
+	}
+		cout<<"Answer is : "<<sum<<endl;
+	return 0;
+}
