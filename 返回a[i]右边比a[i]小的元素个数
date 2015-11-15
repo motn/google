@@ -30,7 +30,8 @@ public class Test {//用 binary indexed tree， nlogn时间， n空间
         for(int i = len - 1; i >= 0; i--) {
 //        	if(a[i] != 0) { //[3,2,1]
         		update(a[i], 1);
-        		res[i] = read(a[i] - 1) + s;
+//        		res[i] = read(a[i] - 1) + s;
+			res[i] = read(a[i] - 1);
 //        	} else {
 //        		s++;
 //        	}
