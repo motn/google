@@ -8,11 +8,11 @@
 
 --------------以下代码---------------------
 public class Test {//用 binary indexed tree， nlogn时间， n空间
-	//如果不用b来copy数组a的值，那么MaxVal设置大点，1000，然后update里<MaxVal+5最好
+	//如果不用b来copy数组a的值，那么MaxVal设置大点，1000，然后update里<MaxVal+5最好，另外，注释掉的s那些都要
     static int MaxVal;
     static int[] tree;
     public static void main(String[] args) {
-        int[] a ={20, 11, 32, 2, 7, 7, 9, 1, 7};
+        int[] a ={7,3,6,1,2};
         int len = a.length;
         int[] b = new int[len];
         for(int i = 0; i < len; i++) {
@@ -22,18 +22,18 @@ public class Test {//用 binary indexed tree， nlogn时间， n空间
         for(int i = 0; i < len; i++) {
         	a[i] = Arrays.binarySearch(b, a[i]) + 1;
         }
-        int s = 0;
+//        int s = 0;
         MaxVal = len + 1;
         tree = new int[MaxVal + 1];
         int[] res = new int[MaxVal];
         res[len] = 0;
         for(int i = len - 1; i >= 0; i--) {
-        	if(a[i] != 0) {
+//        	if(a[i] != 0) { //[3,2,1]
         		update(a[i], 1);
         		res[i] = read(a[i] - 1) + s;
-        	} else {
-        		s++;
-        	}
+//        	} else {
+//        		s++;
+//        	}
         }
         for(int i = 0; i < len; i++) {
         	System.out.println(res[i]);
@@ -42,8 +42,8 @@ public class Test {//用 binary indexed tree， nlogn时间， n空间
 
     public static void update(int idx, int val){
         while(idx <= MaxVal){
-            tree[idx] += val;
-            idx += (idx & -idx);
+            tree[idx] += val; // [1]=1 [2]=1 [4]=1, [2]=2 [4]=2, [3]=1 [4]=3
+            idx += (idx & -idx);// read:0,           1              2
         }
     }
 
