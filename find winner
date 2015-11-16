@@ -1,0 +1,57 @@
+struct LogEntry{
+  string candidate;  投票姓名.鏈枃鍘熷垱鑷�1point3acres璁哄潧
+  int time; 投票时间
+};
+string findWinner(int time, vector<LogEntry> &logs); 让找出在这个时间时候的winner. 鐣欏鐢宠璁哄潧-涓€浜╀笁鍒嗗湴
+c1(1), c2(2), c1(2), c2(3),c2(4) 括号里是投票时间。 所以
+findWinner(2, logs) = c1;
+findWinner(4, logs) = c2;
+用的hash表。找出最多的那个（投票在此时间后的不算）
+
+-----------------以下代码-----------
+
+public class Test {//cabac----abc
+    public static void main(String[] args) {
+    	LogEntry le1 = new LogEntry("c1", 1);
+    	LogEntry le2 = new LogEntry("c2", 2);
+    	LogEntry le3 = new LogEntry("c1", 2);
+    	LogEntry le4 = new LogEntry("c2", 3);
+    	LogEntry le5 = new LogEntry("c2", 4);
+    	List<LogEntry> log = new ArrayList<>();
+    	log.add(le1);
+    	log.add(le2);
+    	log.add(le3);
+    	log.add(le4);
+    	log.add(le5);
+    	System.out.println(findWin(4, log));
+    }
+    public static String findWin(int time, List<LogEntry> log) {
+    	Map<String, Integer> map = new HashMap<>();
+    	for(LogEntry le : log) {
+    		if(le.time <= time) {
+    			map.put(le.name, map.get(le.name) == null ? 1 : map.get(le.name) + 1);
+    		}
+    	}
+    	int max = 0;
+    	for(Integer count : map.values()) {
+    		max = Math.max(max, count);
+    	}
+    	String res = null;
+    	for(Map.Entry<String, Integer> entry : map.entrySet()) {
+    		if(entry.getValue() == max) {
+    			res = entry.getKey();
+    			break;
+    		}
+    	}
+    	return res;
+    }
+}
+
+class LogEntry {
+	String name;
+	int time;
+	public LogEntry(String name, int time) {
+		this.name = name;
+		this.time = time;
+	}
+}
