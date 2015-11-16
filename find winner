@@ -8,6 +8,11 @@ findWinner(2, logs) = c1;
 findWinner(4, logs) = c2;
 用的hash表。找出最多的那个（投票在此时间后的不算）
 
+第二题（follow up）
+给一个时间，找出前k个winner。
+我的做法是用hash表 先统计每个candidate的票数， 形成一个array，然后就是找前k大个数。 
+用的quick select。刚刚写完，partition的时候估计有bug。 
+
 -----------------以下代码-----------
 
 public class Test {//cabac----abc
@@ -54,4 +59,35 @@ class LogEntry {
 		this.name = name;
 		this.time = time;
 	}
+}
+
+
+------------------------以下代码 二--------用quick select求K个大数---因为quick select可以求第k个大数(1...k)，
+------------会部分排序，挑出第K大的数的同时，左边全部是比他更大的，所以同时也得到最大的K个数了-----
+//find kth largest(from 1) and get k largest elements at the same time
+    public static int findKthLargest(int[] a, int k) {//倒序，前面大，后面小
+    	int l = 0, r = a.length - 1;
+    	while(l < r) {
+    		int i = l, j = r;
+    		int pivot = a[i];
+    		while(i < j) {
+    			while(i < j && a[j] <= pivot)//前面大，后面小
+    				j--;
+    			if(i < j) 
+    				a[i++] = a[j];
+    			while(i < j && a[i] >= pivot)
+    				i++;
+    			if(i < j)
+    				a[j--] = a[i];
+    		}
+    		a[i] = pivot;
+    		if(i == k - 1) //共k个大数，a[i]前都是比这个 kth largest大的数
+    			break;
+    		else if(i < k - 1)
+    			l = i + 1;
+    		else
+    			r = i - 1;
+    	}
+    	return a[k - 1];
+    }
 }
