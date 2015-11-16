@@ -1,0 +1,40 @@
+Given the following binary tree,
+         1
+       /  \
+      2    3
+     / \    \
+    4   5    7
+After calling your function, the tree should look like:
+         1 -> NULL
+       /  \
+      2 -> 3 -> NULL
+     / \    \
+    4-> 5 -> 7 -> NULL
+    
+    
+    
+    ----------------------以下代码-------------------
+    public class Solution {
+    public void connect(TreeLinkNode root) {
+        if(root == null) return;
+        TreeLinkNode dummy = new TreeLinkNode(0);//not TreeNode注意
+        dummy.next = root;
+        TreeLinkNode leftMost = null, cur = null;
+        while(dummy.next != null) {//always points to first node of next level
+            leftMost = dummy;
+            cur = dummy.next;
+            dummy.next = null;//割前链，更为了最后一层的leftMost指向null
+            for(; cur != null; cur = cur.next) {
+                if(cur.left != null) {
+                    leftMost.next = cur.left;
+                    leftMost = leftMost.next;
+                    //上面两行可以并为：leftMost = leftMost = cur.next;
+                }
+                if(cur.right != null) {
+                    leftMost.next = cur.right;
+                    leftMost = leftMost.next;
+                }
+            }
+        }
+    }
+}
