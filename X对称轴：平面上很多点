@@ -1,0 +1,75 @@
+1.1 平面上很多点，是否存在一条垂直于x轴的线，使得这些点对于这条线轴对称。
+
+第一道题，取点里面，x坐标最小值和最大值，然后得出中间位置。建个set把所有点存进去，
+然后遍历所有点，对每个点计算对称的点（x对称，y不变），如果计算出的点不在set里面就不存在这样的对称轴。否则最后返回true。
+
+------------------以下代码------------
+
+public class Test {//cabac----abc
+    public static void main(String[] args) {
+    	Point p1 = new Point(0, 1);
+    	Point p2 = new Point(0, 2);
+    	Point p3 = new Point(1, 1);
+    	Point p4 = new Point(1, 2);
+    	Point p5 = new Point(-1, 1);
+    	Point p6 = new Point(-1, 2);
+//    	Point p7 = new Point(-1, 3);
+    	Point p8 = new Point(3, 1);
+    	Point p9 = new Point(-3, 1);
+    	List<Point> points = new ArrayList<>();
+    	points.add(p1);
+    	points.add(p2);
+    	points.add(p3);
+    	points.add(p4);
+    	points.add(p5);
+    	points.add(p6);
+//    	points.add(p7);
+    	points.add(p8);
+    	points.add(p9);
+    	System.out.println(hasSymmetricAxis(points));
+    	
+	}
+    public static boolean hasSymmetricAxis(List<Point> points) {
+    	double min = Double.MAX_VALUE;
+    	double max = Double.MIN_VALUE;
+    	Map<Double, List<Double>> map = new HashMap<>();
+    	for(Point p : points) {
+    		min = Math.min(min, p.x);
+    		max = Math.max(max, p.x);
+    		if(map.get(p.x) == null) {
+    			map.put(p.x, new ArrayList<Double>());
+    		}
+    		map.get(p.x).add(p.y);
+    	}
+    	double m = min + (max - min) / 2.0;
+    	if(map.containsKey(m))
+    		map.remove(m);
+    	
+    	for(Point p : points) {
+    		if(p.x == m) continue;
+    		Double xx = 2 * m - p.x; //必须大写Double(object)
+    		if(!map.containsKey(xx)) {
+    			return false;
+    		} else {
+    			if(!map.get(xx).contains(p.y)) {
+    				return false;
+    			} else {
+    				map.get(xx).remove(p.y);
+    				if(map.get(xx).size() == 0) {
+    					map.remove(xx);
+    				}
+    			}
+    		}
+    	}
+    	return true;
+    }
+}
+
+class Point {
+	double x;
+	double y;
+	public Point(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+}
