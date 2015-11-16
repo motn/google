@@ -27,31 +27,3 @@ public class Codec {
 
 
 
-------------------------以下代码(自己写，可能还是上面的好)------------
-public class Test {//cabac----abc
-    public static void main(String[] args) {
-        String[] ss = {"abc", "abcc", "abccc"};
-        String s = encode(ss);
-        List<String> res = decode(s);
-        for(String a : res) 
-        	System.out.println(a);
-    }
-    public static String encode(String[] ss) {
-    	StringBuilder sb = new StringBuilder();
-    	for(int i = 0; i < ss.length; i++) {
-    		sb.append(ss[i]);
-    		sb.append(ss[i].length());
-    		sb.append('#');
-    	}
-    	return sb.toString();
-    }
-    public static List<String> decode(String s) {
-    	List<String> res = new ArrayList<>();
-    	for(int i = 0; i < s.length();) {
-    		int pos = s.indexOf("#", i);
-    		res.add(s.substring(i, i + (s.charAt(pos - 1) - '0')));
-    		i = pos + 1;
-    	}
-    	return res;
-    }
-}
