@@ -1,0 +1,57 @@
+标  题: 问一道算法题，求大牛解答
+发信站: BBS 未名空间站 (Mon Nov 16 22:27:35 2015, 美东)
+今天面a家，感觉最后一轮bar raiser凶多吉少。
+出了俩题，第一题股票买卖，秒俩
+第二题是压缩字符串，比如abcddddd要成为a1b1c1d4。
+可以假设压缩后的长度小于压缩前，也保证所有count都在1到9
+如果用额外空间，很简单
+但要求in place
+以前完全没想到过这种要求，所以a->a1的case挺难handle的。 最后在烙印提示下，勉
+强想出两遍遍历的方法，
+第一次： abcd4
+第二次从后往前存，变成  a1b1c1d4
+有其它更巧妙解法吗？
+
+public class Test {//abcddddd   要成为    a1b1c1d4, in place，不会出现大于9
+    public static void main(String[] args) {
+    	char[] a = {'a','b','b','c','d','d','e','e','e','f','g','g','h'};
+    	char[] res = compress(a);
+    	for(char c : res)
+    		System.out.print(c);
+	}
+
+    public static char[] compress(char[] a) {
+    	// 第一遍，single不动，duplicates处理好 
+    	int pos = 0; //第一遍copy的idx
+    	int count = 1; //每种字符的个数
+    	int num = 0; //字符数种类隔宿
+    	for(int i = 0; i < a.length; i++, num++) {
+    		if(i + 1 < a.length && a[i] != a[i + 1]) {
+    			a[pos++] = a[i];
+    		} else {
+    			int j = i + 1;
+    			while(j < a.length && a[i] == a[j]) {
+    				j++;
+    				count++;
+    			}
+    			a[pos++] = a[i];
+    			a[pos++] = (char)(count + '0');
+    			count = 1;
+    			i = j - 1;
+    		}
+    	}
+    	
+    	// 第二遍，处理single，duplicates不变
+    	pos--;
+    	char[] res = new char[2 * num];
+    	for(int i = 2 * num - 1; i >= 0; i--) {
+    		if(a[pos] > '9') { //single
+    			res[i--] = (char)(1 + '0');
+    		} else {
+    			res[i--] = a[pos--];
+    		}
+    		res[i] = a[pos--];
+    	}
+    	return res;
+    }
+}
