@@ -4,7 +4,7 @@
 
 用binary indexed tree 树状数组来做
 关于bit，可以参考下面这个网站的介绍 http://www.hawstein.com/posts/binary-indexed-trees.html
-
+赶紧参考下面： http://www.geeksforgeeks.org/binary-indexed-tree-or-fenwick-tree-2/
 
 --------------以下代码---------------------
 public class Test {//用 binary indexed tree， nlogn时间， n空间
